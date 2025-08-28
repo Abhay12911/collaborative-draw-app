@@ -62,7 +62,10 @@ wss.on('connection', function connection(ws, request) {
 
     if (parsedData.type === "join_room") {
       const user = users.find(x => x.ws === ws);
-      user?.rooms.push(parsedData.roomId);
+      if (user) {
+        user.rooms.push(parsedData.roomId);
+        console.log(`User ${userId} joined room ${parsedData.roomId}`);
+      }
     }
 
     if (parsedData.type === "leave_room") {
@@ -71,32 +74,76 @@ wss.on('connection', function connection(ws, request) {
         return;
       }
       user.rooms = user?.rooms.filter(x => x === parsedData.room);
+      console.log(`User ${userId} left room ${parsedData.room}`);
     }
 
     console.log("message received")
     console.log(parsedData);
 
     if (parsedData.type === "chat") {
-      const roomId = parsedData.roomId;
-      const message = parsedData.message;
+      try {
+        const roomId = parsedData.roomId;
+        const message = parsedData.message;
 
-      await prismaClient.chat.create({
-        data: {
-          roomId: Number(roomId),
-          message,
-          userId
-        }
-      });
+        // Validate that the room exists
+        const room = await prismaClient.room.findUnique({
+          where: { id: Number(roomId) }
+        });
 
-      users.forEach(user => {
-        if (user.rooms.includes(roomId)) {
-          user.ws.send(JSON.stringify({
-            type: "chat",
-            message: message,
+        if (!room) {
+          console.error(`Room ${roomId} not found`);
+          ws.send(JSON.stringify({
+            type: "error",
+            message: "Room not found",
             roomId
-          }))
+          }));
+          return;
         }
-      })
+
+        // Check if user is a member of the room
+        const user = users.find(x => x.ws === ws);
+        if (!user || !user.rooms.includes(roomId)) {
+          console.error(`User ${userId} not a member of room ${roomId}`);
+          ws.send(JSON.stringify({
+            type: "error",
+            message: "You are not a member of this room",
+            roomId
+          }));
+          return;
+        }
+
+        // Create the chat message
+        const chat = await prismaClient.chat.create({
+          data: {
+            roomId: Number(roomId),
+            message,
+            userId
+          }
+        });
+
+        console.log(`Chat message created: ${chat.id}`);
+
+        // Broadcast to all users in the room
+        users.forEach(user => {
+          if (user.rooms.includes(roomId)) {
+            user.ws.send(JSON.stringify({
+              type: "chat",
+              message: message,
+              roomId,
+              userId,
+              chatId: chat.id
+            }))
+          }
+        })
+      } catch (error) {
+        console.error("Error creating chat message:", error);
+        const errorMessage = error instanceof Error ? error.message : 'Unknown error';
+        ws.send(JSON.stringify({
+          type: "error",
+          message: "Failed to send message",
+          error: errorMessage
+        }));
+      }
     }
 
   });

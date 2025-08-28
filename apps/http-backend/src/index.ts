@@ -1,6 +1,6 @@
 import express from "express";
 import jwt from "jsonwebtoken";
-import { JWT_SECRET } from '@repo/backend-common/config';
+import { JWT_SECRET } from "@repo/backend-common/config";
 import { middleware } from "./middleware";
 import { CreateUserSchema, SigninSchema, CreateRoomSchema } from "@repo/common/types";
 import { prismaClient } from "@repo/db/client";
@@ -124,7 +124,6 @@ app.get("/chats/:roomId", async (req, res) => {
             messages: []
         })
     }
-    
 })
 
 app.get("/room/:slug", async (req, res) => {
@@ -139,5 +138,7 @@ app.get("/room/:slug", async (req, res) => {
         room
     })
 })
+
+
 
 app.listen(3001);

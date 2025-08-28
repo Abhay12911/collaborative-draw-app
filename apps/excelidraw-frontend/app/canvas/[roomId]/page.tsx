@@ -1,12 +1,33 @@
-import { RoomCanvas } from "@/components/RoomCanvas";
+"use client";
 
-export default async function CanvasPage({ params }: {
+import { RoomCanvas } from "@/components/RoomCanvas";
+import { useSearchParams } from "next/navigation";
+
+export default function CanvasPage({ params }: {
     params: {
         roomId: string
     }
 }) {
-    const roomId = (await params).roomId;
+    const searchParams = useSearchParams();
+    const token = searchParams.get('token') || '';
+    const roomId = params.roomId;
 
-    return <RoomCanvas roomId={roomId} />
+    if (!token) {
+        return (
+            <div className="flex items-center justify-center h-screen">
+                <div className="text-center">
+                    <h1 className="text-2xl font-bold mb-4">Token Required</h1>
+                    <p className="text-gray-600 mb-4">
+                        Please provide a valid JWT token as a query parameter
+                    </p>
+                    <p className="text-sm text-gray-500">
+                        Example: /canvas/{roomId}?token=YOUR_JWT_TOKEN
+                    </p>
+                </div>
+            </div>
+        );
+    }
+
+    return <RoomCanvas roomId={roomId} token={token} />
    
 }
