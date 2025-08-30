@@ -139,6 +139,36 @@ export class Game {
 
         this.clearCanvas();
     }
+     
+    // ======= ZOOMING =======
+private updateZooming(e: WheelEvent) {
+    e.preventDefault();
+
+    const oldScale = this.viewportTransform.scale;
+    const oldX = this.viewportTransform.x;
+    const oldY = this.viewportTransform.y;
+
+    const rect = this.canvas.getBoundingClientRect();
+    const localX = e.clientX - rect.left;
+    const localY = e.clientY - rect.top;
+
+    // compute new scale
+    const previousScale = this.viewportTransform.scale;
+    let newScale = this.viewportTransform.scale + e.deltaY * -0.01;
+
+    // clamp scale (avoid infinite zoom)
+    newScale = Math.min(Math.max(0.1, newScale), 10);
+
+    // adjust transform so zoom focuses around mouse point
+    const newX = localX - (localX - oldX) * (newScale / previousScale);
+    const newY = localY - (localY - oldY) * (newScale / previousScale);
+
+    this.viewportTransform.x = newX;
+    this.viewportTransform.y = newY;
+    this.viewportTransform.scale = newScale;
+
+    this.clearCanvas();
+}
 
     // ======= MOUSE EVENTS =======
     mouseDownHandler = (e: MouseEvent) => {
@@ -238,5 +268,7 @@ export class Game {
         this.canvas.addEventListener("mousedown", this.mouseDownHandler);
         this.canvas.addEventListener("mouseup", this.mouseUpHandler);
         this.canvas.addEventListener("mousemove", this.mouseMoveHandler);
+        this.canvas.addEventListener("wheel", (e) => this.updateZooming(e));
     }
 }
+

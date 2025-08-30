@@ -1,9 +1,9 @@
 import { useEffect, useRef, useState } from "react";
 import { IconButton } from "./IconButton";
-import { Circle, Eraser, Pencil, RectangleHorizontalIcon } from "lucide-react";
+import { Circle, Eraser, Move, Pencil, RectangleHorizontalIcon } from "lucide-react";
 import { Game } from "@/draw/Game";
 
-export type Tool = "circle" | "rect" | "pencil" | "eraser";;
+export type Tool = "circle" | "rect" | "pencil" | "eraser"| "pan";
 
 export function Canvas({
     roomId,
@@ -47,11 +47,16 @@ function Topbar({selectedTool, setSelectedTool}: {
     selectedTool: Tool,
     setSelectedTool: (s: Tool) => void
 }) {
-    return <div style={{
-            position: "fixed",
-            top: 10,
-            left: 10
-        }}>
+    return <div  style={{
+        position: "fixed",
+        top: 10,
+        left: "50%",
+        transform: "translateX(-50%)", // center horizontally
+        display: "flex",
+        justifyContent: "center",
+        width: "100%", // span full width for flex centering
+// so it doesn’t block canvas (optional)
+    }}>
             <div className="flex gap-t">
                 <IconButton 
                     onClick={() => {
@@ -69,6 +74,9 @@ function Topbar({selectedTool, setSelectedTool}: {
                 <IconButton onClick={() => {
                     setSelectedTool("eraser")
                 }} activated={selectedTool === "eraser"} icon={<Eraser />}></IconButton>
+                <IconButton onClick={() => {
+                    setSelectedTool("pan")
+                }} activated={selectedTool === "pan"} icon={<Move />}></IconButton>
             </div>
         </div>
 }
