@@ -139,7 +139,35 @@ export class Game {
 
         this.clearCanvas();
     }
-     
+private   pointToLineDistance(p1: { x: number; y: number }, p2: { x: number; y: number }, p: { x: number; y: number }) {
+    const A = p.x - p1.x;
+    const B = p.y - p1.y;
+    const C = p2.x - p1.x;
+    const D = p2.y - p1.y;
+  
+    const dot = A * C + B * D;
+    const len_sq = C * C + D * D;
+    let param = -1;
+    if (len_sq !== 0) param = dot / len_sq;
+  
+    let xx, yy;
+  
+    if (param < 0) {
+      xx = p1.x;
+      yy = p1.y;
+    } else if (param > 1) {
+      xx = p2.x;
+      yy = p2.y;
+    } else {
+      xx = p1.x + param * C;
+      yy = p1.y + param * D;
+    }
+  
+    const dx = p.x - xx;
+    const dy = p.y - yy;
+    return Math.sqrt(dx * dx + dy * dy);
+  }
+  
     // ======= ZOOMING =======
 private updateZooming(e: WheelEvent) {
     e.preventDefault();
@@ -206,7 +234,39 @@ private updateZooming(e: WheelEvent) {
                 centerX: this.startX + radius,
                 centerY: this.startY + radius,
             };
-        }
+        }else if (this.selectedTool === "eraser") {
+            // Find shape near mouse point
+            const mouseX = e.clientX;
+            const mouseY = e.clientY;
+          
+            // Simple hit detection
+            this.existingShapes = this.existingShapes.filter((shape) => {
+              if (shape.type === "rect") {
+                return !(
+                  mouseX >= shape.x &&
+                  mouseX <= shape.x + shape.width &&
+                  mouseY >= shape.y &&
+                  mouseY <= shape.y + shape.height
+                );
+              } else if (shape.type === "circle") {
+                const dx = mouseX - shape.centerX;
+                const dy = mouseY - shape.centerY;
+                return dx * dx + dy * dy > shape.radius * shape.radius;
+              } else if (shape.type === "pencil") {
+                // distance from point to line segment (approx eraser size = 5px)
+                const dist = this.pointToLineDistance(
+                  { x: shape.startX, y: shape.startY },
+                  { x: shape.endX, y: shape.endY },
+                  { x: mouseX, y: mouseY }
+                );
+                return dist > 5; // keep if far
+              }
+              return true;
+            });
+          
+            this.clearCanvas();
+          }
+          
 
         if (!shape) return;
 

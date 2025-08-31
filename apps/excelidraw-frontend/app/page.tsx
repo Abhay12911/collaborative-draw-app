@@ -102,7 +102,7 @@ function App() {
                   className="flex items-center space-x-2 bg-gray-100"
                 >
                   <Users2 className="h-4 w-4" />
-                  <span>Join Room</span>
+                  <span >Join Room</span>
                 </Button>
                 <Button variant="outline" size="sm" onClick={handleSignOut}>
                   Sign Out
@@ -128,8 +128,8 @@ function App() {
         <div className="container mx-auto px-4 py-16 sm:px-6 lg:px-8 bg-white">
           <div className="text-center">
             <h1 className="text-4xl font-bold bg-gradient-to-r from-pink-500 via-purple-500 to-blue-500 bg-clip-text text-transparent tracking-tight sm:text-6xl">
-              Collaborative Whiteboarding
-              <span className="text-primary block  bg-gradient-to-r from-pink-500 to-blue-700 bg-clip-text text-transparent">Made Simple</span>
+              Think Together,Create Faster
+              
             </h1>
             <p className="mx-auto mt-6 max-w-2xl text-lg text-muted-foreground">
               Create, collaborate, and share beautiful diagrams and sketches with our intuitive drawing tool.
@@ -368,3 +368,4 @@ function App() {
 }
 
 export default App;
+
