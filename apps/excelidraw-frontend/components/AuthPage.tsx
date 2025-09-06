@@ -54,7 +54,7 @@ export function AuthPage({isSignin}: {
     };
 
     return (
-        <div className="w-screen h-screen flex justify-center items-center bg-gray-50">
+        <div className="w-screen h-screen flex justify-center items-center bg-black">
             <div className="p-8 bg-white rounded-lg shadow-lg w-96">
                 <h1 className="text-2xl font-bold text-center mb-6">
                     {isSignin ? "Sign In" : "Sign Up"}
@@ -76,7 +76,7 @@ export function AuthPage({isSignin}: {
                                 type="text"
                                 value={name}
                                 onChange={(e) => setName(e.target.value)}
-                                className="w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                                className="w-full text-white p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
                                 placeholder="Enter your name"
                                 required
                             />
@@ -91,7 +91,7 @@ export function AuthPage({isSignin}: {
                             type="email"
                             value={email}
                             onChange={(e) => setEmail(e.target.value)}
-                            className="w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                            className="w-full text-white p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
                             placeholder="Enter your email"
                             required
                         />
@@ -105,7 +105,7 @@ export function AuthPage({isSignin}: {
                             type="password"
                             value={password}
                             onChange={(e) => setPassword(e.target.value)}
-                            className="w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                            className="w-full text-white p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
                             placeholder="Enter your password"
                             required
                         />

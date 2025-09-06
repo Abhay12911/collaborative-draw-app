@@ -143,7 +143,7 @@ function App() {
                 <div className="flex gap-x-4">
                   <Button onClick={handleCreateRoom} variant="default" size="lg" className="h-12 px-6">
                     <Plus className="ml-2 h-4 w-4" />
-                    Create Your First Room
+                    Create Your Room
                   </Button>
                   <Button
                     variant="outline"
