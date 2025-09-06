@@ -39,3 +39,24 @@ Free-hand Drawing (Pen/Brush)
 ![Collaborative Mode](./screenshots/Joinroom.png)  
 ![Draw board](./screenshots/draw.png)  
 ![SingnUp](./screenshots/signup.png)
+
+🛠️ Tech Stack
+Frontend: Next.js (with TypeScript)
+
+Backend: Express + WebSocket
+
+Database: PostgreSQL
+
+Architecture: Monorepo structure for managing frontend & backend together
+
+Others: Canvas API
+
+⚡ Getting Started
+1. Clone the repository
+git clone https://github.com/your-username/collaborative-draw-app.git
+cd collaborative-draw-app
+2. Install dependencies
+npm install
+3. Run the development server
+npm run dev
+Your app will be running at http://localhost:3000 🎉
