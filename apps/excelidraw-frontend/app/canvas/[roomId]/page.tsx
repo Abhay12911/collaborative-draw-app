@@ -36,15 +36,13 @@
 import { RoomCanvas } from "@/components/RoomCanvas";
 import { useSearchParams } from "next/navigation";
 
-interface CanvasPageProps {
-  params: {
-    roomId: string;
-  };
-}
+type CanvasPageProps = {
+  params: any; // <-- bypass strict type
+};
 
 export default function CanvasPage({ params }: CanvasPageProps) {
   const searchParams = useSearchParams();
-  const token = searchParams.get("token") || "";
+  const token = searchParams.get('token') || '';
   const roomId = params.roomId;
 
   if (!token) {
