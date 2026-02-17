@@ -14,7 +14,10 @@
   },
   "packageManager": "pnpm@9.0.0",
   "engines": {
-    "pnpm" : ">=7",
+    "pnpm": ">=7",
     "node": ">=18"
+  },
+  "dependencies": {
+    "jsonwebtoken": "^9.0.2"
   }
 }
