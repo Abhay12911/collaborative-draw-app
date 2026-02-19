@@ -9,6 +9,7 @@
   },
   "dependencies": {
     "@repo/db": "workspace:*",
+    "@types/bcrypt": "^6.0.0",
     "@types/cors": "^2.8.17",
     "@types/jsonwebtoken": "^9.0.7",
     "cors": "^2.8.5",
